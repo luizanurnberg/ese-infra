@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres-order:
+    image: postgres:13
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${ORDER_DB}
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+
+  ese-order:
+    build:
+      context: ./services/ese-order
+    ports:
+      - "3001:3000"
+    environment:
+      - POSTGRES_HOST=postgres-order
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${ORDER_DB}
+    depends_on:
+      - postgres-order
+
+  postgres-payment:
+    image: postgres:13
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${PAYMENT_DB}
+    volumes:
+      - postgres_payment_data:/var/lib/postgresql/data
+
+  ese-payment:
+    build:
+      context: ./services/ese-payment
+    ports:
+      - "3002:3000"
+    environment:
+      - POSTGRES_HOST=postgres-payment
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${PAYMENT_DB}
+    depends_on:
+      - postgres-payment
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ese-order
+      - ese-payment
+
+volumes:
+  postgres_order_data:
+  postgres_payment_data:
