@@ -12,7 +12,10 @@ cd "$SERVICES_DIR"
 echo "📦 Clonando ESE-ORDER..."
 git clone https://github.com/luizanurnberg/ese-order.git
 
-# echo "📦 Clonando ESE-PAYMENT..."
-# git clone git@github.com:luizanurnberg/ese-payment.git
+echo "📦 Clonando ESE-PAYMENT..."
+git clone https://github.com/maariaceciliaholler/ese-payment.git
+
+echo "📦 Clonando ESE-AUTH..."
+git clone https://github.com/maariaceciliaholler/ese-authentication.git
 
 echo "✅ Todos os serviços foram clonados!"
