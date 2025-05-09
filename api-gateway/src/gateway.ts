@@ -13,6 +13,11 @@ app.use('/payments', createProxyMiddleware({
     changeOrigin: true
 }));
 
+app.use('/api', createProxyMiddleware({
+    target: 'http://ese-authentication:3000',
+    changeOrigin: true
+}));
+
 const PORT = 8080;
 app.listen(PORT, () => {
     console.log(`API Gateway rodando na porta ${PORT}`);

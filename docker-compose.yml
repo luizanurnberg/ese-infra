@@ -51,30 +51,32 @@ services:
     depends_on:
       - postgres-payment
 
-  # postgres-auth:
-  #   image: postgres:13
-  #   ports:
-  #     - "5434:5432"
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${AUTH_DB}
-  #   volumes:
-  #     - postgres_auth_data:/var/lib/postgresql/data
+  postgres-auth:
+    image: postgres:13
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB}
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
 
-  # ese-auth:
-  #   build:
-  #     context: ./services/ese-authentication
-  #   ports:
-  #     - "3002:3000"
-  #   environment:
-  #     - POSTGRES_HOST=postgres-auth
-  #     - POSTGRES_PORT=5432
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #     - POSTGRES_DB=${AUTH_DB}
-  #   depends_on:
-  #     - postgres-auth
+  ese-authentication:
+    build:
+      context: ./services/ese-authentication
+    ports:
+      - "3003:3000"
+    environment:
+      - POSTGRES_HOST=postgres-auth
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${AUTH_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+    depends_on:
+      - postgres-auth
 
   api-gateway:
     build:
@@ -84,10 +86,11 @@ services:
     depends_on:
       - ese-order
       - ese-payment
+      - ese-authentication
 
 volumes:
   postgres_order_data:
   postgres_payment_data:
-  # postgres_auth_data:
+  postgres_auth_data:
 
   
