@@ -10,7 +10,10 @@ app.use('/orders', createProxyMiddleware({
 
 app.use('/payments', createProxyMiddleware({
     target: 'http://ese-payment:3000',
-    changeOrigin: true
+    changeOrigin: true,
+    pathRewrite: {
+        '^/payments': '/api/payment',
+    }
 }));
 
 app.use('/api', createProxyMiddleware({
