@@ -18,4 +18,10 @@ git clone https://github.com/maariaceciliaholler/ese-payment.git
 echo "📦 Clonando ESE-AUTH..."
 git clone https://github.com/maariaceciliaholler/ese-authentication.git
 
+echo "📦 Clonando ESE-RABBIT..."
+git clone https://github.com/eduardo-schork/ese-message-broker.git
+
+echo "📦 Clonando ESE-TRACKING..."
+git clone https://github.com/eduardo-schork/ese-tracking.git
+
 echo "✅ Todos os serviços foram clonados!"
