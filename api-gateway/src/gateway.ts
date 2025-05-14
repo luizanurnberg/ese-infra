@@ -5,7 +5,10 @@ const app = express();
 
 app.use('/orders', createProxyMiddleware({
     target: 'http://ese-order:3000',
-    changeOrigin: true
+    changeOrigin: true,
+    pathRewrite: {
+        '^/orders': '/api/order',
+    }
 }));
 
 app.use('/payments', createProxyMiddleware({
@@ -16,9 +19,17 @@ app.use('/payments', createProxyMiddleware({
     }
 }));
 
+app.use('/payments', createProxyMiddleware({
+    target: 'http://ese-tracking:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/payments': '/api/tracking',
+    }
+}));
+
 app.use('/api', createProxyMiddleware({
     target: 'http://ese-authentication:3000',
-    changeOrigin: true
+    changeOrigin: true,
 }));
 
 const PORT = 8080;

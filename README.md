@@ -9,5 +9,12 @@ ssh-keyscan github.com >> ~/.ssh/known_hosts
 3 - executar o comando dentro da pasta de scripts
 ./clone-services.sh
 
-4 - na raiz do projeto executar 
+4 - passar o env-example para cada microsserviço instalado
+
+5 - rodar o npm install
+
+6 - na raiz do projeto executar 
 docker-compose up --build
+
+7 - se fizer alguma alteração rodar o comando abaixo e depois o comando 4
+docker system prune -af --volumes
