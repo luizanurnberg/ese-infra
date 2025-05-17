@@ -11,6 +11,14 @@ app.use('/orders', createProxyMiddleware({
     }
 }));
 
+app.use('/quotations', createProxyMiddleware({
+    target: 'http://ese-order:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/quotations': '/api/quotation',
+    }
+}));
+
 app.use('/payments', createProxyMiddleware({
     target: 'http://ese-payment:3000',
     changeOrigin: true,
