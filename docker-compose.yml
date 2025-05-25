@@ -12,6 +12,8 @@ services:
       POSTGRES_DB: ${ORDER_DB}
     volumes:
       - postgres_order_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   ese-order:
     build:
@@ -26,6 +28,8 @@ services:
       - POSTGRES_DB=${ORDER_DB}
     depends_on:
       - postgres-order
+    networks:
+      - backend
 
   # Payment Service
   postgres-payment:
@@ -38,6 +42,8 @@ services:
       POSTGRES_DB: ${PAYMENT_DB}
     volumes:
       - postgres_payment_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   ese-payment:
     build:
@@ -54,6 +60,8 @@ services:
       - JWT_EXPIRATION=${JWT_EXPIRATION}
     depends_on:
       - postgres-payment
+    networks:
+      - backend
 
   # Authentication Service
   postgres-auth:
@@ -66,6 +74,8 @@ services:
       POSTGRES_DB: ${AUTH_DB}
     volumes:
       - postgres_auth_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   ese-authentication:
     build:
@@ -82,11 +92,12 @@ services:
       - JWT_EXPIRATION=${JWT_EXPIRATION}
     depends_on:
       - postgres-auth
+    networks:
+      - backend
 
   # Tracking Service
   postgres-tracking:
     image: postgres:14.5
-    container_name: ese-tracking-db
     ports:
       - "5436:5432"
     environment:
@@ -96,12 +107,12 @@ services:
     volumes:
       - postgres_tracking_data:/var/lib/postgresql/data
     networks:
+      - backend
       - rabbitmq_net
 
   ese-tracking:
     build:
       context: ./services/ese-tracking
-    container_name: ese-tracking-service
     depends_on:
       - postgres-tracking
       - rabbitmq
@@ -116,8 +127,9 @@ services:
       - QUEUE_NAME=delivery_appointments
     ports:
       - "3004:${TRACKING_APP_PORT}"
-    command: node dist/main.js
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "node", "dist/main.js"]
     networks:
+      - backend
       - rabbitmq_net
 
   # Delivery Queue Service
@@ -145,6 +157,11 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     networks:
       - rabbitmq_net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # API Gateway
   api-gateway:
@@ -157,6 +174,8 @@ services:
       - ese-payment
       - ese-authentication
       - ese-tracking
+    networks:
+      - backend
 
 volumes:
   postgres_order_data:
@@ -165,5 +184,6 @@ volumes:
   postgres_tracking_data:
 
 networks:
+  backend:
   rabbitmq_net:
     external: false

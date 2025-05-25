@@ -27,11 +27,11 @@ app.use('/payments', createProxyMiddleware({
     }
 }));
 
-app.use('/payments', createProxyMiddleware({
+app.use('/address', createProxyMiddleware({
     target: 'http://ese-tracking:3000',
     changeOrigin: true,
     pathRewrite: {
-        '^/payments': '/api/tracking',
+        '^/address': '/api/address',
     }
 }));
 
