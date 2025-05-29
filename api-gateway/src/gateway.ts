@@ -3,11 +3,11 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 
-app.use('/orders', createProxyMiddleware({
+app.use('/offers', createProxyMiddleware({
     target: 'http://ese-order:3000',
     changeOrigin: true,
     pathRewrite: {
-        '^/orders': '/api/order',
+        '^/offers': '/api/offer',
     }
 }));
 
@@ -32,6 +32,30 @@ app.use('/address', createProxyMiddleware({
     changeOrigin: true,
     pathRewrite: {
         '^/address': '/api/address',
+    }
+}));
+
+app.use('/delivery', createProxyMiddleware({
+    target: 'http://ese-tracking:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/delivery': '/api/delivery-process',
+    }
+}));
+
+app.use('/fleet', createProxyMiddleware({
+    target: 'http://ese-tracking:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/fleet': '/api/fleet',
+    }
+}));
+
+app.use('/fleet-vehicle', createProxyMiddleware({
+    target: 'http://ese-tracking:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/fleet-vehicle': '/api/fleet-vehicle',
     }
 }));
 
