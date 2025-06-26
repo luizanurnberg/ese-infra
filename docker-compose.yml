@@ -1,189 +1,198 @@
 version: "3.8"
 
 services:
-  # Order Service
-  postgres-order:
-    image: postgres:13
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${ORDER_DB}
-    volumes:
-      - postgres_order_data:/var/lib/postgresql/data
-    networks:
-      - backend
+    # Order Service
+    postgres-order:
+        image: postgres:13
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${ORDER_DB}
+        volumes:
+            - postgres_order_data:/var/lib/postgresql/data
+        networks:
+            - backend
 
-  ese-order:
-    build:
-      context: ./services/ese-order
-    ports:
-      - "3001:${ORDER_APP_PORT}"
-    environment:
-      - POSTGRES_HOST=postgres-order
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${ORDER_DB}
-    depends_on:
-      - postgres-order
-    networks:
-      - backend
+    ese-order:
+        build:
+            context: ./services/ese-order
+            args:
+                NODE_OPTIONS: "--max_old_space_size=2048"
+        ports:
+            - "3001:${ORDER_APP_PORT}"
+        environment:
+            - POSTGRES_HOST=postgres-order
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${ORDER_DB}
+        depends_on:
+            - postgres-order
+        networks:
+            - backend
 
-  # Payment Service
-  postgres-payment:
-    image: postgres:13
-    ports:
-      - "5434:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${PAYMENT_DB}
-    volumes:
-      - postgres_payment_data:/var/lib/postgresql/data
-    networks:
-      - backend
+    # Payment Service
+    postgres-payment:
+        image: postgres:13
+        ports:
+            - "5434:5432"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${PAYMENT_DB}
+        volumes:
+            - postgres_payment_data:/var/lib/postgresql/data
+        networks:
+            - backend
 
-  ese-payment:
-    build:
-      context: ./services/ese-payment
-    ports:
-      - "3002:${PAYMENT_APP_PORT}"
-    environment:
-      - POSTGRES_HOST=postgres-payment
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${PAYMENT_DB}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-    depends_on:
-      - postgres-payment
-    networks:
-      - backend
+    ese-payment:
+        build:
+            context: ./services/ese-payment
+            args:
+                NODE_OPTIONS: "--max_old_space_size=2048"
+        ports:
+            - "3002:${PAYMENT_APP_PORT}"
+        environment:
+            - POSTGRES_HOST=postgres-payment
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${PAYMENT_DB}
+            - JWT_SECRET=${JWT_SECRET}
+            - JWT_EXPIRATION=${JWT_EXPIRATION}
+        depends_on:
+            - postgres-payment
+        networks:
+            - backend
 
-  # Authentication Service
-  postgres-auth:
-    image: postgres:13
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${AUTH_DB}
-    volumes:
-      - postgres_auth_data:/var/lib/postgresql/data
-    networks:
-      - backend
+    # Authentication Service
+    postgres-auth:
+        image: postgres:13
+        ports:
+            - "5435:5432"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${AUTH_DB}
+        volumes:
+            - postgres_auth_data:/var/lib/postgresql/data
+        networks:
+            - backend
 
-  ese-authentication:
-    build:
-      context: ./services/ese-authentication
-    ports:
-      - "3003:${AUTH_APP_PORT}"
-    environment:
-      - POSTGRES_HOST=postgres-auth
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${AUTH_DB}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-    depends_on:
-      - postgres-auth
-    networks:
-      - backend
+    ese-authentication:
+        build:
+            context: ./services/ese-authentication
+            args:
+                NODE_OPTIONS: "--max_old_space_size=2048"
+        ports:
+            - "3003:${AUTH_APP_PORT}"
+        environment:
+            - POSTGRES_HOST=postgres-auth
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${AUTH_DB}
+            - JWT_SECRET=${JWT_SECRET}
+            - JWT_EXPIRATION=${JWT_EXPIRATION}
+        depends_on:
+            - postgres-auth
+        networks:
+            - backend
 
-  # Tracking Service
-  postgres-tracking:
-    image: postgres:14.5
-    ports:
-      - "5436:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${TRACKING_DB}
-    volumes:
-      - postgres_tracking_data:/var/lib/postgresql/data
-    networks:
-      - backend
-      - rabbitmq_net
+    # Tracking Service
+    postgres-tracking:
+        image: postgres:14.5
+        ports:
+            - "5436:5432"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${TRACKING_DB}
+        volumes:
+            - postgres_tracking_data:/var/lib/postgresql/data
+        networks:
+            - backend
+            - rabbitmq_net
 
-  ese-tracking:
-    build:
-      context: ./services/ese-tracking
-    depends_on:
-      - postgres-tracking
-      - rabbitmq
-    environment:
-      - POSTGRES_HOST=postgres-tracking
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${TRACKING_DB}
-      - PORT=${TRACKING_APP_PORT}
-      - RABBITMQ_URL=amqp://rabbitmq
-      - QUEUE_NAME=delivery_appointments
-    ports:
-      - "3004:${TRACKING_APP_PORT}"
-    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "node", "dist/main.js"]
-    networks:
-      - backend
-      - rabbitmq_net
+    ese-tracking:
+        build:
+            context: ./services/ese-tracking
+        depends_on:
+            - postgres-tracking
+            - rabbitmq
+        environment:
+            - POSTGRES_HOST=postgres-tracking
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${TRACKING_DB}
+            - PORT=${TRACKING_APP_PORT}
+            - RABBITMQ_URL=amqp://rabbitmq
+            - QUEUE_NAME=delivery_appointments
+        ports:
+            - "3004:${TRACKING_APP_PORT}"
+        command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "node", "dist/main.js"]
+        networks:
+            - backend
+            - rabbitmq_net
 
-  # Delivery Queue Service
-  delivery-queue-service:
-    build:
-      context: ./services/ese-message-broker
-    ports:
-      - "3005:${DELIVERY_QUEUE_APP_PORT}"
-    depends_on:
-      - rabbitmq
-    environment:
-      - RABBITMQ_URL=amqp://rabbitmq
-      - QUEUE_NAME=delivery_appointments
-    networks:
-      - rabbitmq_net
+    # Delivery Queue Service
+    delivery-queue-service:
+        build:
+            context: ./services/ese-message-broker
+        ports:
+            - "3005:${DELIVERY_QUEUE_APP_PORT}"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=amqp://rabbitmq
+            - QUEUE_NAME=delivery_appointments
+        networks:
+            - rabbitmq_net
+            - backend
 
-  # RabbitMQ
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    networks:
-      - rabbitmq_net
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # RabbitMQ
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        networks:
+            - rabbitmq_net
+        healthcheck:
+            test: ["CMD", "rabbitmq-diagnostics", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  # API Gateway
-  api-gateway:
-    build:
-      context: ./api-gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      - ese-order
-      - ese-payment
-      - ese-authentication
-      - ese-tracking
-    networks:
-      - backend
+    # API Gateway
+    api-gateway:
+        build:
+            context: ./api-gateway
+        ports:
+            - "8080:8080"
+        depends_on:
+            - ese-order
+            - ese-payment
+            - ese-authentication
+            - ese-tracking
+            - delivery-queue-service
+        networks:
+            - backend
+            - rabbitmq_net
 
 volumes:
-  postgres_order_data:
-  postgres_payment_data:
-  postgres_auth_data:
-  postgres_tracking_data:
+    postgres_order_data:
+    postgres_payment_data:
+    postgres_auth_data:
+    postgres_tracking_data:
 
 networks:
-  backend:
-  rabbitmq_net:
-    external: false
+    backend:
+    rabbitmq_net:
+        external: false

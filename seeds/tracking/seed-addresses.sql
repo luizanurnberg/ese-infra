@@ -1,0 +1,32 @@
+INSERT INTO addresses (
+    "street",
+    "number",
+    "complement",
+    "neighborhood",
+    "city",
+    "state",
+    "postalCode",
+    "createdAt",
+    "createdBy"
+) VALUES
+('Rua das Flores', '123', 'Apto 101', 'Centro', 'São Paulo', 'SP', '01000-000', NOW(), 'seed'),
+('Avenida Brasil', '456', NULL, 'Copacabana', 'Rio de Janeiro', 'RJ', '22000-000', NOW(), 'seed'),
+('Rua João Alfredo', '789', 'Casa', 'Cidade Baixa', 'Porto Alegre', 'RS', '90050-000', NOW(), 'seed'),
+('Avenida Sete de Setembro', '321', 'Sala 202', 'Centro', 'Curitiba', 'PR', '80000-000', NOW(), 'seed'),
+('Rua das Acácias', '654', NULL, 'Jardim das Américas', 'Goiânia', 'GO', '74000-000', NOW(), 'seed'),
+('Rua Padre Cícero', '987', 'Bloco B', 'Centro', 'Juazeiro do Norte', 'CE', '63000-000', NOW(), 'seed'),
+('Rua Frei Caneca', '159', NULL, 'Bela Vista', 'São Paulo', 'SP', '01307-001', NOW(), 'seed'),
+('Avenida Paulista', '753', 'Andar 5', 'Bela Vista', 'São Paulo', 'SP', '01311-000', NOW(), 'seed'),
+('Rua Pernambuco', '852', NULL, 'Savassi', 'Belo Horizonte', 'MG', '30130-150', NOW(), 'seed'),
+('Avenida Boa Viagem', '147', NULL, 'Boa Viagem', 'Recife', 'PE', '51020-000', NOW(), 'seed'),
+
+('5th Avenue', '350', 'Apt 12A', 'Manhattan', 'New York', 'NY', '10001', NOW(), 'seed'),
+('Baker Street', '221B', NULL, 'Marylebone', 'London', 'England', 'NW1 6XE', NOW(), 'seed'),
+('Rue de Rivoli', '750', NULL, '1er Arrondissement', 'Paris', 'Île-de-France', '75001', NOW(), 'seed'),
+('Kurfürstendamm', '100', NULL, 'Charlottenburg', 'Berlin', 'Berlin', '10709', NOW(), 'seed'),
+('Gran Via', '45', 'Piso 3', 'Centro', 'Madrid', 'Madrid', '28013', NOW(), 'seed'),
+('Via Roma', '88', NULL, 'Centro Storico', 'Rome', 'Lazio', '00184', NOW(), 'seed'),
+('Queen Street', '200', 'Unit 5', 'Downtown', 'Toronto', 'Ontario', 'M5V 2B7', NOW(), 'seed'),
+('Collins Street', '480', NULL, 'Melbourne CBD', 'Melbourne', 'Victoria', '3000', NOW(), 'seed'),
+('Shinjuku Street', '3-1', 'Tower A', 'Shinjuku', 'Tokyo', 'Tokyo', '160-0022', NOW(), 'seed'),
+('Rua 25 de Julho', '120', NULL, 'Centro', 'Blumenau', 'SC', '89010-000', NOW(), 'seed');

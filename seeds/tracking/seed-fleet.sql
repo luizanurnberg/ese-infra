@@ -1,0 +1,25 @@
+INSERT INTO fleets (
+    "name",
+    "createdAt",
+    "createdBy"
+) VALUES
+('Frota Sul Logística', NOW(), 'seed'),
+('Frota Norte Transportes', NOW(), 'seed'),
+('Frota Centro-Oeste Cargas', NOW(), 'seed'),
+('Frota Nordeste Entregas', NOW(), 'seed'),
+('Frota Sudeste Express', NOW(), 'seed'),
+('Frota Transcontinental', NOW(), 'seed'),
+('Frota Rodoviária Nacional', NOW(), 'seed'),
+('Frota Rápida Brasil', NOW(), 'seed'),
+('Frota Interestadual Cargo', NOW(), 'seed'),
+('Frota Metropolitana', NOW(), 'seed'),
+('Frota Mercosul Logistics', NOW(), 'seed'),
+('Frota Intermodal Solutions', NOW(), 'seed'),
+('Frota Caminhões Ligeiros', NOW(), 'seed'),
+('Frota Pesada Transportes', NOW(), 'seed'),
+('Frota Ecológica Express', NOW(), 'seed'),
+('Frota UltraCarga', NOW(), 'seed'),
+('Frota MasterFreight', NOW(), 'seed'),
+('Frota TransBrasil', NOW(), 'seed'),
+('Frota LogFast', NOW(), 'seed'),
+('Frota Global Movers', NOW(), 'seed');

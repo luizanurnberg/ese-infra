@@ -1,0 +1,28 @@
+INSERT INTO fleet_vehicles (
+    model,
+    plate,
+    "cpfDriver",
+    renavam,
+    "createdAt",
+    "createdBy"
+) VALUES
+('Mercedes-Benz Actros', 'ABC1D23', '123.456.789-00', '10000000001', NOW(), 'seed'),
+('Volvo FH 540', 'DEF2E34', '234.567.890-11', '10000000002', NOW(), 'seed'),
+('Scania R450', 'GHI3F45', '345.678.901-22', '10000000003', NOW(), 'seed'),
+('Iveco Stralis', 'JKL4G56', '456.789.012-33', '10000000004', NOW(), 'seed'),
+('DAF XF105', 'MNO5H67', '567.890.123-44', '10000000005', NOW(), 'seed'),
+('Volkswagen Constellation 24.280', 'PQR6I78', '678.901.234-55', '10000000006', NOW(), 'seed'),
+('Mercedes-Benz Atego 2426', 'STU7J89', '789.012.345-66', '10000000007', NOW(), 'seed'),
+('Volvo VM 270', 'VWX8K90', '890.123.456-77', '10000000008', NOW(), 'seed'),
+('Scania G410', 'YZA9L01', '901.234.567-88', '10000000009', NOW(), 'seed'),
+('Iveco Tector 240E28', 'BCD0M12', '012.345.678-99', '10000000010', NOW(), 'seed'),
+('Mercedes-Benz Axor 3344', 'EFG1N23', '123.123.123-11', '10000000011', NOW(), 'seed'),
+('Volvo FH 460', 'HIJ2O34', '234.234.234-22', '10000000012', NOW(), 'seed'),
+('Scania P360', 'KLM3P45', '345.345.345-33', '10000000013', NOW(), 'seed'),
+('Iveco Daily 70C17', 'NOP4Q56', '456.456.456-44', '10000000014', NOW(), 'seed'),
+('DAF CF85', 'QRS5R67', '567.567.567-55', '10000000015', NOW(), 'seed'),
+('Mercedes-Benz Accelo 1016', 'TUV6S78', '678.678.678-66', '10000000016', NOW(), 'seed'),
+('Volvo VM 330', 'WXY7T89', '789.789.789-77', '10000000017', NOW(), 'seed'),
+('Scania R500', 'ZAB8U90', '890.890.890-88', '10000000018', NOW(), 'seed'),
+('Iveco Cursor 330', 'CDE9V01', '901.901.901-99', '10000000019', NOW(), 'seed'),
+('DAF XF 510', 'FGH0W12', '012.012.012-00', '10000000020', NOW(), 'seed');
